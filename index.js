@@ -12,14 +12,9 @@ app.use((req, res, next) => {
  next();
 });
 app.use(express.json());
-const PORT = process.env.PORT || 5000;
-const routes = require('../routes/routes');
+const PORT = process.env.PORT || 3000;
+const routes = require('./routes/routes');
 app.use('/api', routes);
-
-app.get("/", (req, res) => {
-    res.send("Express on Vercel");
-  });
-
 app.listen(PORT, () => {
  console.log(`Server Started at ${PORT}`)
 })
@@ -40,5 +35,3 @@ db.on('error', (error) => {
 db.once('connected', () => {
  console.log('Database Connected');
 })
-
-module.exports = app;
