@@ -42,6 +42,10 @@ app.get('/getAll', async (req, res) => {
   }
 });
 
+app.get('/', async (req, res) => {
+  res.status(200).json({ message: "working :)" })
+});
+
 app.delete('/delete/:id', async (req, res) => {
   try {
       const id = req.params.id
