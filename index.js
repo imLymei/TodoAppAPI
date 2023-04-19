@@ -43,7 +43,7 @@ app.get('/getAll', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-  res.status(200).json({ message: "working :)" })
+  res.status(200).json("working :)")
 });
 
 app.delete('/delete/:id', async (req, res) => {
