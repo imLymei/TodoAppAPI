@@ -12,7 +12,7 @@ let backup = {
     edit: []
 }
 
-router.post('/post', verificaJWT, async (req, res) => {
+router.post('/post', async (req, res) => {
     const objetoTarefa = new modeloTarefa({
     descricao: req.body.descricao,
     statusRealizada: req.body.statusRealizada
@@ -26,7 +26,7 @@ router.post('/post', verificaJWT, async (req, res) => {
     }
    });
 
-router.get('/getAll', verificaJWT, async (req, res) => {
+router.get('/getAll', async (req, res) => {
     try {
         const resultados = await modeloTarefa.find();
         res.json(resultados)
@@ -36,7 +36,7 @@ router.get('/getAll', verificaJWT, async (req, res) => {
     }
 });
 
-router.delete('/delete/:id', verificaJWT, async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const id = req.params.id
         backup.acao = 'DELETE'
@@ -50,7 +50,7 @@ router.delete('/delete/:id', verificaJWT, async (req, res) => {
     }
    });
 
-router.patch('/undo', verificaJWT, async (req,res) =>{
+router.patch('/undo', async (req,res) =>{
     try{
         
     } catch (error){
@@ -58,7 +58,7 @@ router.patch('/undo', verificaJWT, async (req,res) =>{
     }
 })
 
-router.patch('/update/:id', verificaJWT, async (req, res) => {
+router.patch('/update/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const novaTarefa = req.body;
@@ -73,7 +73,7 @@ router.patch('/update/:id', verificaJWT, async (req, res) => {
     }
    });
 
-router.get('/encontrarPorParteDaDescricao/:desc', verificaJWT, async (req,res) => {
+router.get('/encontrarPorParteDaDescricao/:desc', async (req,res) => {
     try{
         const desc = req.params.desc;
         const result = await modeloTarefa.find({descricao: { $regex: desc}})
@@ -83,7 +83,7 @@ router.get('/encontrarPorParteDaDescricao/:desc', verificaJWT, async (req,res) =
     }
 });
 
-router.delete('/removeAll', verificaJWT, async(req,res) =>{
+router.delete('/removeAll', async(req,res) =>{
     try{
         const result = await modeloTarefa.deleteMany();
         res.json(result)
@@ -92,7 +92,7 @@ router.delete('/removeAll', verificaJWT, async(req,res) =>{
     }
 });
 
-router.delete('/removeAllDone', verificaJWT, async(req,res) =>{
+router.delete('/removeAllDone', async(req,res) =>{
     try{
         const result = await modeloTarefa.deleteMany({statusRealizada: true});
         res.json(result)
