@@ -25,6 +25,20 @@ router.post('/post', verificaJWT, async (req, res) => {
     }
    })
 
+router.post('/postUser', verificaJWT, async (req, res) => {
+    const objetoUser = new userModel({
+    username: req.body.username,
+    password: req.body.password,
+    isAdmin: req.body.isAdmin
+    })
+    try {
+    const userSalvo = await objetoUser.save();
+    res.status(200).json(userSalvo)
+    }
+    catch (error) {
+    res.status(400).json({ message: error.message })
+    }
+   })
    
 router.get('/getAll', verificaJWT, async (req, res) => {
     try {
@@ -51,6 +65,17 @@ router.delete('/delete/:id',verificaJWT,async (req, res) => {
     try {
         const id = req.params.id;
         const resultado = await modeloTarefa.findByIdAndDelete(req.params.id)
+        res.json(resultado)
+    }
+    catch (error) {
+    res.status(400).json({ message: error.message })
+    }
+   })
+
+   router.delete('/deleteUser/:id',verificaJWT,async (req, res) => {
+    try {
+        const id = req.params.id;
+        const resultado = await userModel.findByIdAndDelete(req.params.id)
         res.json(resultado)
     }
     catch (error) {
@@ -104,6 +129,21 @@ router.patch('/update/:id', verificaJWT, async (req, res) => {
     const options = { new: true };
     const result = await modeloTarefa.findByIdAndUpdate(
     id, novaTarefa, options
+    )
+    res.json(result)
+    }
+    catch (error) {
+    res.status(400).json({ message: error.message })
+    }
+   })
+
+   router.patch('/updateUser/:id', verificaJWT, async (req, res) => {
+    try {
+    const id = req.params.id;
+    const novoUser = req.body;
+    const options = { new: true };
+    const result = await userModel.findByIdAndUpdate(
+    id, novoUser, options
     )
     res.json(result)
     }
