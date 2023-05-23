@@ -4,12 +4,8 @@ var userSchema = new mongoose.Schema({
  unique: true,
  type: String
  },
- password: {
- type: String
- },
- isAdmin: {
-type: Boolean
-},
+ hash: String,
+ salt: String
 },
  {
  versionKey: false

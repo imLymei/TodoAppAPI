@@ -28,7 +28,8 @@ router.post('/post', verificaJWT, async (req, res) => {
 router.post('/postUser', verificaJWT, async (req, res) => {
     const objetoUser = new userModel({
     username: req.body.username,
-    password: req.body.password,
+    hash: generateHash(req.body.password, "$AB%G6"),
+    salt: "$AB%G6",
     isAdmin: req.body.isAdmin
     })
     try {
@@ -158,7 +159,7 @@ router.patch('/update/:id', verificaJWT, async (req, res) => {
     try {
     const data = await userModel.findOne({ 'username': req.body.username });
    
-    if (data != null && data.password === req.body.password) {
+    if (data!=null && validPassword(req.body.password, data.hash, data.salt)) {
     const token = jwt.sign({ id: req.body.user }, 'segredo',
     { expiresIn: 300 });
     return res.json({ token: token , isAdmin: data.isAdmin});
@@ -191,3 +192,14 @@ function verificaJWT(req, res, next) {
     next();
     });
    }
+
+var { createHash } = require('crypto');
+function validPassword (senha, hashBD, saltBD) {
+    const hashCalculado=createHash('sha256').update(senha+saltBD).digest('hex');
+    return hashCalculado === hashBD;
+};
+
+function generateHash (senha, saltBD) {
+    const hashCalculado=createHash('sha256').update(senha+saltBD).digest('hex');
+    return hashCalculado;
+};
